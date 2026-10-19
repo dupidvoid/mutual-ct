@@ -65,9 +65,9 @@ body {
     cursor: pointer; 
 }
 
-/* Dynamic Router Windows */
+/* --- FIXED SCREEN ROUTING WINDOWS --- */
 .app-window { 
-    display: none; 
+    display: none;             /* CRITICAL FIX: Keeps screens hidden until activated */
     width: 100%; 
     height: 100%; 
     position: absolute; 
@@ -76,6 +76,31 @@ body {
     padding-top: 38px; 
     padding-bottom: 28px; 
     flex-direction: column; 
+    background: transparent;   /* Ensures background gradients show through nicely */
+}
+
+/* Forces the window to display cleanly when toggled by app.js */
+.app-window.active { 
+    display: flex !important; 
+}
+
+/* --- OPTIONAL OVERLAP FIX FOR THE DROPDOWN NOTIFICATION LAYERS --- */
+#notification-overlay { 
+    display: none; 
+    position: absolute; 
+    top: 44px; 
+    left: 12px; 
+    right: 12px; 
+    background: rgba(255, 255, 255, 0.95); /* Bumped opacity for text legibility */
+    backdrop-filter: blur(20px); 
+    padding: 14px; 
+    border-radius: 20px; 
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15); 
+    z-index: 600;                          /* Pushed above lockscreen overlay stack */
+    color: #1c1c1e; 
+    border: 1px solid rgba(0, 0, 0, 0.05); 
+}
+
 }
 
 .app-window.active { 
