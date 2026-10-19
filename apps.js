@@ -1,3 +1,4 @@
+// Variable DOM Element Cache Mappings
 var inputField = document.getElementById('ios-input-field');
 var keyboardPanel = document.getElementById('keyboard-panel');
 var gifPicker = document.getElementById('ios-gif-picker');
@@ -6,6 +7,7 @@ var notificationOverlay = document.getElementById('notification-overlay');
 var lockscreen = document.getElementById('iphone-lockscreen');
 var photoFileInput = document.getElementById('ios-photo-file');
 
+// Real-Time 24-Hour System Clock Loop
 function updateSystemTime() {
     var now = new Date();
     var hours = now.getHours();
@@ -23,12 +25,16 @@ function updateSystemTime() {
 setInterval(updateSystemTime, 1000);
 updateSystemTime();
 
-function isLocked() { return lockscreen.classList.contains('active'); }
+function isLocked() {
+    return lockscreen.classList.contains('active');
+}
 
 function openApp(appId) {
     if (isLocked()) return;
     var windows = document.querySelectorAll('.app-window');
-    for (var i = 0; i < windows.length; i++) { windows[i].classList.remove('active'); }
+    for (var i = 0; i < windows.length; i++) {
+        windows[i].classList.remove('active');
+    }
     document.getElementById(appId).classList.add('active');
     notificationOverlay.style.display = 'none';
 }
@@ -40,16 +46,38 @@ function goHome() {
     openApp('app-home');
 }
 
-document.getElementById('unlock-trigger').onclick = function() { lockscreen.classList.remove('active'); openApp('app-home'); };
-document.getElementById('lockscreen-notification').onclick = function() { lockscreen.classList.remove('active'); openApp('app-messages'); };
-document.getElementById('hardware-home-bar').onclick = function() { goHome(); };
+// Global Device Touch Click Handlers
+document.getElementById('unlock-trigger').onclick = function() {
+    lockscreen.classList.remove('active');
+    openApp('app-home');
+};
+
+document.getElementById('lockscreen-notification').onclick = function() {
+    lockscreen.classList.remove('active');
+    openApp('app-messages');
+};
+
+document.getElementById('hardware-home-bar').onclick = function() {
+    goHome();
+};
+
 document.getElementById('launch-messages').onclick = function() { openApp('app-messages'); };
 document.getElementById('launch-store').onclick = function() { openApp('app-store'); };
 document.getElementById('msg-back-btn').onclick = function() { goHome(); };
 
-inputField.onclick = function() { keyboardPanel.classList.add('active'); gifPicker.style.display = 'none'; };
-document.getElementById('key-return').onclick = function() { keyboardPanel.classList.remove('active'); };
-document.getElementById('key-delete').onclick = function() { inputField.value = inputField.value.slice(0, -1); };
+// Virtual iOS Keyboard Core Routines
+inputField.onclick = function() {
+    keyboardPanel.classList.add('active');
+    gifPicker.style.display = 'none';
+};
+
+document.getElementById('key-return').onclick = function() {
+    keyboardPanel.classList.remove('active');
+};
+
+document.getElementById('key-delete').onclick = function() {
+    inputField.value = inputField.value.slice(0, -1);
+};
 
 var charKeys = document.querySelectorAll('.kbd-char');
 for (var j = 0; j < charKeys.length; j++) {
@@ -60,14 +88,20 @@ for (var j = 0; j < charKeys.length; j++) {
     };
 }
 
+// Photo & GIF Dispatch Engines
 document.getElementById('gif-trigger-btn').onclick = function() {
     if (gifPicker.style.display === 'none') {
         keyboardPanel.classList.remove('active');
         gifPicker.style.display = 'block';
-    } else { gifPicker.style.display = 'none'; }
+    } else {
+        gifPicker.style.display = 'none';
+    }
 };
 
-document.getElementById('photo-trigger-btn').onclick = function() { photoFileInput.click(); };
+document.getElementById('photo-trigger-btn').onclick = function() {
+    photoFileInput.click();
+};
+
 photoFileInput.onchange = function(event) {
     var files = event.target.files;
     if (files.length > 0) {
@@ -103,8 +137,15 @@ function appendMsgNode(content, dataType) {
     row.className = 'msg-row';
     var bubble = document.createElement('div');
     bubble.className = 'msg-bubble';
-    if (dataType === 'text') { bubble.innerText = content; } 
-    else { var img = document.createElement('img'); img.src = content; bubble.appendChild(img); }
+
+    if (dataType === 'text') {
+        bubble.innerText = content;
+    } else {
+        var img = document.createElement('img');
+        img.src = content;
+        bubble.appendChild(img);
+    }
+
     row.appendChild(bubble);
     chatMessages.appendChild(row);
     chatMessages.scrollTop = chatMessages.scrollHeight;
