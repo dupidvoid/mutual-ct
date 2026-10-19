@@ -8,25 +8,24 @@
 </head>
 <body>
 
-    <!-- Precise Hardware Chassis Shell Container -->
     <div class="iphone-frame">
         <div class="iphone-notch"></div>
         
         <div class="iphone-screen">
-            <!-- OS System Top Status Bar -->
+            <!-- OS System Status Bar -->
             <div class="status-bar" id="top-status-bar">
                 <span id="status-time">09:41 🌐</span>
                 <span>📶 🔋 100%</span>
             </div>
 
             <!-- SYSTEM STATE 0: LOCK SCREEN LAYER -->
-            <div id="iphone-lockscreen" class="app-window active">
+            <div id="iphone-lockscreen" class="app-window active" style="background: url('https://unsplash.com') center/cover; z-index: 500; padding-top: 60px; justify-content: space-between; align-items: center;">
+                
                 <div class="lock-clock-area">
-                    <div id="lock-date">Monday, 19 October</div>
-                    <div id="lock-time">09:41</div>
+                    <div id="lock-date" style="color: white; text-shadow: 0 1px 4px rgba(0,0,0,0.4);">Monday, 19 October</div>
+                    <div id="lock-time" style="color: white; text-shadow: 0 1px 4px rgba(0,0,0,0.4);">09:41</div>
                 </div>
 
-                <!-- Notification Card Banner -->
                 <div id="lockscreen-notification" class="notification-banner-card">
                     <div class="banner-header-row">
                         <span class="banner-tag">💬 iMESSAGE</span>
@@ -36,10 +35,9 @@
                     <div class="banner-body">Check out the interactive keyboard!</div>
                 </div>
 
-                <!-- Swipe Action Control Link -->
                 <div class="unlock-footer-area">
-                    <div id="unlock-trigger" class="unlock-pulse-text">
-                        <span>🔼 Swipe up or Click to Unlock</span>
+                    <div id="unlock-trigger" class="unlock-pulse-text" style="text-shadow: 0 1px 2px rgba(0,0,0,0.5);">
+                        <span> Swipe up or Click to Unlock</span>
                     </div>
                 </div>
             </div>
@@ -47,7 +45,7 @@
             <!-- APP NOTIFICATION DROPDOWN OVERLAY -->
             <div id="notification-overlay">
                 <div class="banner-header-row">
-                    <span class="banner-tag-dark">💬 MESSAGES</span>
+                    <span class="banner-tag-dark"> MESSAGES</span>
                     <span>now</span>
                 </div>
                 <p class="banner-sender-dark">Website Developer</p>
@@ -68,7 +66,7 @@
                 </div>
             </div>
 
-            <!-- SYSTEM STATE 2: IMESSAGE APPLICATION VIEW INTERFACE -->
+            <!-- SYSTEM STATE 2: IMESSAGE VIEW INTERFACE -->
             <div id="app-messages" class="app-window">
                 <div class="chat-header">
                     <button class="back-btn" id="msg-back-btn">◀</button>
@@ -76,12 +74,11 @@
                 </div>
                 
                 <div id="chat-messages" class="messages-feed">
-                    <div id="session-timestamp">Today 13:12 PM</div>
+                    <div id="session-timestamp">Today 9:41 AM</div>
                 </div>
                 
                 <input type="file" id="ios-photo-file" accept="image/*">
                 
-                <!-- Pop-up Inline GIF Drawer (Using placeholder image elements safely) -->
                 <div id="ios-gif-picker">
                     <p class="gif-drawer-title">Trending GIFs</p>
                     <div class="gif-drawer-grid">
@@ -92,7 +89,6 @@
                     </div>
                 </div>
 
-                <!-- Chat Input Controller Dock Layout Bar -->
                 <div class="input-bar">
                     <button class="action-icon-btn" id="photo-trigger-btn">🖼️</button>
                     <button class="action-icon-btn" id="gif-trigger-btn">🎬</button>
@@ -100,7 +96,6 @@
                     <button class="action-icon-btn" id="send-msg-btn">➔</button>
                 </div>
 
-                <!-- SLIDING OS KEYBOARD SYSTEM -->
                 <div id="keyboard-panel" class="ios-keyboard">
                     <div class="kbd-row">
                         <button class="kbd-key kbd-char">Q</button><button class="kbd-key kbd-char">W</button><button class="kbd-key kbd-char">E</button><button class="kbd-key kbd-char">R</button><button class="kbd-key kbd-char">T</button><button class="kbd-key kbd-char">Y</button><button class="kbd-key kbd-char">U</button><button class="kbd-key kbd-char">I</button><button class="kbd-key kbd-char">O</button><button class="kbd-key kbd-char">P</button>
@@ -121,18 +116,16 @@
                 </div>
             </div>
 
-            <!-- SYSTEM STATE 3: MOCK APP STORE APPLICATION VIEW -->
+            <!-- SYSTEM STATE 3: MOCK APP STORE VIEW -->
             <div id="app-store" class="app-window">
                 <h2 class="store-header">Apps</h2>
                 <p class="store-empty-status">All software extensions are currently up to date.</p>
             </div>
 
-            <!-- Physical Center Navigation Bar -->
             <div class="iphone-home-bar" id="hardware-home-bar"></div>
         </div>
     </div>
 
-    <!-- Script Application Links -->
     <script src="app.js"></script>
 </body>
 </html>
