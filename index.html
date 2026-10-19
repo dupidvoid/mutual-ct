@@ -3,143 +3,127 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Instant Chat App</title>
+    <title>Flagship Smartphone Simulator</title>
 </head>
 <body>
 
-    <!-- 1. THE CHAT HTML STRUCTURE -->
-    <div class="chat-container">
-        <div class="chat-header">
-            <div class="header-avatar">💬</div>
-            <div>
-                <h1 class="header-title">Instant Chat</h1>
-                <div class="header-status"><span class="status-dot"></span> Active Room</div>
+    <!-- Precise Hardware Chassis Shell Container -->
+    <div class="iphone-frame">
+        <!-- Physical Device Notch Earpiece -->
+        <div class="iphone-notch"></div>
+        
+        <div class="iphone-screen">
+            <!-- OS System Top Status Bar -->
+            <div class="status-bar" id="top-status-bar">
+                <span id="status-time">09:41 🌐</span>
+                <span>📶 🔋 100%</span>
             </div>
-        </div>
 
-        <div id="chat-messages" class="messages-area">
-            <div class="system-msg-row">
-                <span class="system-msg">Welcome! Type a message or send media below.</span>
+            <!-- SYSTEM STATE 0: LOCK SCREEN LAYER (Active on Launch) -->
+            <div id="iphone-lockscreen" class="app-window active" style="background: url('https://unsplash.com') center/cover; z-index: 500; padding-top: 60px; display: flex; flex-direction: column; align-items: center; justify-content: space-between;">
+                
+                <!-- Lockscreen Clock Block -->
+                <div style="text-align: center; color: white;">
+                    <div style="font-size: 14px; font-weight: 500; letter-spacing: 1px; margin-bottom: 5px;" id="lock-date">Monday, 19 October</div>
+                    <div style="font-size: 64px; font-weight: 200; font-variant-numeric: tabular-nums;" id="lock-time">09:41</div>
+                </div>
+
+                <!-- Tapable Lockscreen Banner Notification Card -->
+                <div id="lockscreen-notification" style="width: calc(100% - 32px); background: rgba(255, 255, 255, 0.2); backdrop-filter: blur(20px); border-radius: 20px; padding: 14px; color: white; box-shadow: 0 8px 32px rgba(0,0,0,0.2); border: 1px solid rgba(255,255,255,0.1); cursor: pointer;">
+                    <div style="display: flex; justify-content: space-between; font-size: 11px; opacity: 0.7; margin-bottom: 4px;">
+                        <span style="font-weight: 600; letter-spacing: 0.5px;">💬 iMESSAGE</span>
+                        <span>just now</span>
+                    </div>
+                    <div style="font-size: 14px; font-weight: 600;">Alex Mercer</div>
+                    <div style="font-size: 13px; opacity: 0.9; margin-top: 2px;">Check out the interactive keyboard!</div>
+                </div>
+
+                <!-- Interactive Swipe Action Unlock Control Trigger -->
+                <div style="width: 100%; text-align: center; padding-bottom: 40px;">
+                    <div id="unlock-trigger" style="color: rgba(255, 255, 255, 0.8); font-size: 13px; font-weight: 500; letter-spacing: 0.5px; animation: pulse 2s infinite; cursor: pointer; display: inline-flex; align-items: center; gap: 6px;">
+                        <span>🔼 Swipe up or Click to Unlock</span>
+                    </div>
+                </div>
             </div>
-        </div>
 
-        <div id="gif-picker" class="gif-picker hidden">
-            <div class="gif-picker-header">
-                <span>Select a GIF</span>
-                <button onclick="toggleGifPicker()" class="gif-close-btn">✕</button>
+            <!-- APP NOTIFICATION DROPDOWN OVERLAY (Hidden by Default) -->
+            <div id="notification-overlay" style="display: none; position: absolute; top: 44px; left: 12px; right: 12px; background: rgba(255,255,255,0.9); backdrop-filter: blur(20px); padding: 14px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.15); z-index: 200; color: #1c1c1e; border: 1px solid rgba(0,0,0,0.05);">
+                <div style="display: flex; justify-content: space-between; font-size: 11px; color: #8e8e93; margin-bottom: 4px;">
+                    <span style="font-weight: 600; letter-spacing: 0.5px;">💬 MESSAGES</span>
+                    <span>now</span>
+                </div>
+                <p style="font-size: 13px; font-weight: 600;">Alex Mercer</p>
+                <p style="font-size: 12px; color: #3a3a3c; margin-top: 1px;">Hey! Did you check out the new photo and GIF features inside the app yet?</p>
             </div>
-            <div class="gif-grid">
-                <img src="https://giphy.com" alt="Happy" class="gif-item" onclick="sendGif(this.src)">
-                <img src="https://giphy.com" alt="Dance" class="gif-item" onclick="sendGif(this.src)">
-                <img src="https://giphy.com" alt="Cat" class="gif-item" onclick="sendGif(this.src)">
-                <img src="https://giphy.com" alt="Thumbs Up" class="gif-item" onclick="sendGif(this.src)">
+
+            <!-- SYSTEM STATE 1: CORE APP HOME LAUNCHER -->
+            <div id="app-home" class="app-window">
+                <div class="home-grid">
+                    <div class="app-icon-wrapper" id="launch-messages">
+                        <div class="app-icon" style="background-color: #34c759; color: white;">💬</div>
+                        <span class="app-label">Messages</span>
+                    </div>
+                    <div class="app-icon-wrapper" id="launch-store">
+                        <div class="app-icon" style="background-color: #007aff; color: white;">🅰️</div>
+                        <span class="app-label">App Store</span>
+                    </div>
+                </div>
             </div>
-        </div>
 
-        <div class="input-bar">
-            <input type="file" id="photo-input" accept="image/*" class="hidden-file-input" onchange="handlePhotoUpload(event)">
-            <button onclick="triggerPhotoUpload()" class="media-btn" title="Upload Photo">🖼️</button>
-            <button onclick="toggleGifPicker()" class="media-btn" title="Send GIF">🎬</button>
-            <input type="text" id="message-input" placeholder="Type a message..." class="text-input">
-            <button onclick="sendTextMessage()" class="send-btn">➔</button>
-        </div>
-    </div>
+            <!-- SYSTEM STATE 2: IMESSAGE APPLICATION VIEW INTERFACE -->
+            <div id="app-messages" class="app-window">
+                <div class="chat-header">
+                    <button class="back-btn" id="msg-back-btn">◀</button>
+                    <span class="chat-title">Alex Mercer</span>
+                </div>
+                
+                <!-- Chat Scrolling Message Area -->
+                <div id="chat-messages" class="messages-feed">
+                    <div id="session-timestamp" style="text-align: center; font-size: 11px; color: #a1a1aa; margin: 10px 0;">Today 9:41 AM</div>
+                </div>
+                
+                <!-- Hidden file input tracker logic for images -->
+                <input type="file" id="ios-photo-file" accept="image/*" style="display:none;">
+                
+                <!-- Pop-up Inline GIF Drawer -->
+                <div id="ios-gif-picker" style="display: none; background: #f4f4f5; border-top: 1px solid #e4e4e7; padding: 8px; max-height: 120px; overflow-y: auto;">
+                    <p style="font-size: 11px; color: #71717a; font-weight: 600; margin-bottom: 6px;">Trending GIFs</p>
+                    <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px;">
+                        <img src="https://giphy.com" style="width:100%; height:45px; object-fit:cover; border-radius:6px; cursor:pointer;" class="gif-target">
+                        <img src="https://giphy.com" style="width:100%; height:45px; object-fit:cover; border-radius:6px; cursor:pointer;" class="gif-target">
+                        <img src="https://giphy.com" style="width:100%; height:45px; object-fit:cover; border-radius:6px; cursor:pointer;" class="gif-target">
+                        <img src="https://giphy.com" style="width:100%; height:45px; object-fit:cover; border-radius:6px; cursor:pointer;" class="gif-target">
+                    </div>
+                </div>
 
-    <!-- 2. THE CSS STYLING SCRIPT -->
-    <script>
-        (function() {
-            const style = document.createElement("style");
-            style.textContent = `
-                * { box-sizing: border-box; margin: 0; padding: 0; }
-                body { background-color: #f1f5f9; height: 100vh; display: flex; justify-content: center; align-items: center; font-family: sans-serif; }
-                .chat-container { width: 100%; max-width: 440px; height: 600px; background-color: #ffffff; border-radius: 16px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); display: flex; flex-direction: column; overflow: hidden; border: 1px solid #e2e8f0; }
-                .chat-header { background-color: #4f46e5; padding: 16px; display: flex; align-items: center; gap: 12px; color: #ffffff; }
-                .header-avatar { width: 40px; height: 40px; background-color: rgba(255,255,255,0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 20px; }
-                .header-title { font-weight: 600; font-size: 18px; }
-                .header-status { font-size: 12px; opacity: 0.8; display: flex; align-items: center; gap: 4px; }
-                .status-dot { width: 8px; height: 8px; background-color: #4ade80; border-radius: 50%; }
-                .messages-area { flex: 1; padding: 16px; overflow-y: auto; background-color: #f8fafc; display: flex; flex-direction: column; gap: 16px; }
-                .system-msg-row { display: flex; justify-content: center; }
-                .system-msg { background-color: #e2e8f0; color: #475569; font-size: 12px; padding: 4px 12px; border-radius: 9999px; }
-                .msg-row { display: flex; justify-content: flex-end; }
-                .msg-bubble { background-color: #4f46e5; color: #ffffff; border-radius: 16px; border-top-right-radius: 0px; max-width: 75%; }
-                .msg-text { padding: 8px 16px; font-size: 14px; word-break: break-word; }
-                .msg-media { padding: 6px; }
-                .msg-media img { border-radius: 12px; max-height: 192px; object-fit: cover; width: 100%; display: block; }
-                .gif-picker { border-top: 1px solid #e2e8f0; background-color: #ffffff; padding: 12px; max-height: 192px; overflow-y: auto; }
-                .gif-picker.hidden { display: none; }
-                .gif-picker-header { font-size: 12px; font-weight: 600; color: #64748b; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; }
-                .gif-close-btn { border: none; background: none; color: #94a3b8; cursor: pointer; font-weight: bold; }
-                .gif-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
-                .gif-item { border-radius: 4px; cursor: pointer; height: 64px; width: 100%; object-fit: cover; }
-                .input-bar { padding: 12px; background-color: #ffffff; border-top: 1px solid #e2e8f0; display: flex; align-items: center; gap: 8px; }
-                .hidden-file-input { display: none; }
-                .media-btn { border: none; background: none; padding: 8px; color: #64748b; cursor: pointer; font-size: 18px; }
-                .text-input { flex: 1; background-color: #f1f5f9; color: #1e293b; font-size: 14px; padding: 8px 16px; border-radius: 9999px; border: none; outline: none; }
-                .send-btn { background-color: #4f46e5; color: #ffffff; border: none; width: 36px; height: 36px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; }
-                ::-webkit-scrollbar { width: 6px; }
-                ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
-            `;
-            document.head.appendChild(style);
-        })();
-    </script>
+                <!-- Chat Input Controller Dock Layout Bar -->
+                <div class="input-bar">
+                    <button class="action-icon-btn" id="photo-trigger-btn">🖼️</button>
+                    <button class="action-icon-btn" id="gif-trigger-btn">🎬</button>
+                    <input type="text" id="ios-input-field" class="ios-input-box" placeholder="iMessage" readonly>
+                    <button class="action-icon-btn" id="send-msg-btn">➔</button>
+                </div>
 
-    <!-- 3. THE CHAT ENGINE FUNCTIONALITY -->
-    <script>
-        const chatMessages = document.getElementById('chat-messages');
-        const messageInput = document.getElementById('message-input');
-        const gifPicker = document.getElementById('gif-picker');
-        const photoInput = document.getElementById('photo-input');
+                <!-- SLIDING OS KEYBOARD SYSTEM -->
+                <div id="keyboard-panel" class="ios-keyboard">
+                    <div class="kbd-row">
+                        <button class="kbd-key kbd-char">Q</button><button class="kbd-key kbd-char">W</button><button class="kbd-key kbd-char">E</button><button class="kbd-key kbd-char">R</button><button class="kbd-key kbd-char">T</button><button class="kbd-key kbd-char">Y</button><button class="kbd-key kbd-char">U</button><button class="kbd-key kbd-char">I</button><button class="kbd-key kbd-char">O</button><button class="kbd-key kbd-char">P</button>
+                    </div>
+                    <div class="kbd-row" style="padding: 0 8px;">
+                        <button class="kbd-key kbd-char">A</button><button class="kbd-key kbd-char">S</button><button class="kbd-key kbd-char">D</button><button class="kbd-key kbd-char">F</button><button class="kbd-key kbd-char">G</button><button class="kbd-key kbd-char">H</button><button class="kbd-key kbd-char">J</button><button class="kbd-key kbd-char">K</button><button class="kbd-key kbd-char">L</button>
+                    </div>
+                    <div class="kbd-row">
+                        <button class="kbd-key wide" id="key-caps">⇧</button>
+                        <button class="kbd-key kbd-char">Z</button><button class="kbd-key kbd-char">X</button><button class="kbd-key kbd-char">C</button><button class="kbd-key kbd-char">V</button><button class="kbd-key kbd-char">B</button><button class="kbd-key kbd-char">N</button><button class="kbd-key kbd-char">M</button>
+                        <button class="kbd-key wide" id="key-delete">⌫</button>
+                    </div>
+                    <div class="kbd-row">
+                        <button class="kbd-key wide">123</button>
+                        <button class="kbd-key space kbd-char">space</button>
+                        <button class="kbd-key wide" id="key-return">Return</button>
+                    </div>
+                </div>
+            </div>
 
-        messageInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') sendTextMessage(); });
-        function toggleGifPicker() { gifPicker.classList.toggle('hidden'); }
-        function triggerPhotoUpload() { photoInput.click(); }
-
-        function handlePhotoUpload(event) {
-            const files = event.target.files;
-            if (files && files[0]) {
-                const localImageUrl = URL.createObjectURL(files[0]);
-                appendMessage(localImageUrl, 'image');
-            }
-            event.target.value = '';
-        }
-
-        function sendGif(url) {
-            appendMessage(url, 'gif');
-            gifPicker.classList.add('hidden');
-        }
-
-        function sendTextMessage() {
-            const text = messageInput.value.trim();
-            if (text === '') return;
-            appendMessage(text, 'text');
-            messageInput.value = '';
-        }
-
-        function appendMessage(content, type = 'text') {
-            const msgWrapper = document.createElement('div');
-            msgWrapper.className = 'msg-row';
-            const msgBubble = document.createElement('div');
-            msgBubble.className = 'msg-bubble';
-
-            if (type === 'text') {
-                const textDiv = document.createElement('div');
-                textDiv.className = 'msg-text';
-                textDiv.innerText = content;
-                msgBubble.appendChild(textDiv);
-            } else {
-                const mediaDiv = document.createElement('div');
-                mediaDiv.className = 'msg-media';
-                const img = document.createElement('img');
-                img.src = content;
-                mediaDiv.appendChild(img);
-                msgBubble.appendChild(mediaDiv);
-            }
-
-            msgWrapper.appendChild(msgBubble);
-            chatMessages.appendChild(msgWrapper);
-            chatMessages.scrollTo({ top: chatMessages.scrollHeight, behavior: 'smooth' });
-        }
-    </script>
-</body>
-</html>
+            <!-- SYSTEM STATE 3: MOCK APP STORE APPLICATION VIEW -->
+            <div id="app-store" class="app-window" style="background:#ffffff; color:#000000; padding:55px 20px 20px 20px;">
