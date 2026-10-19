@@ -5,7 +5,28 @@ var gifPicker = document.getElementById('ios-gif-picker');
 var chatMessages = document.getElementById('chat-messages');
 var notificationOverlay = document.getElementById('notification-overlay');
 var lockscreen = document.getElementById('iphone-lockscreen');
-var photoFileInput = document.getElementById('ios-photo-file');
+var phoneScreen = document.getElementById('global-phone-screen');
+var wallpaperFileInput = document.getElementById('ios-wallpaper-file');
+
+// Default System Fallback Gradient Wallpaper
+var defaultWallpaper = "linear-gradient(180deg, #1e3a8a 0%, #581c87 100%)";
+
+// Load Saved Custom Wallpaper from LocalStorage on Launch
+function loadSavedWallpaper() {
+    var savedBg = localStorage.getItem('iphone_simulator_bg');
+    
+    // Hide the top drop tray from leaking text entries into lockscreen on launch
+    document.getElementById('notification-overlay').style.display = 'none';
+    
+    if (savedBg) {
+        phoneScreen.style.background = savedBg;
+        lockscreen.style.background = savedBg;
+    } else {
+        phoneScreen.style.background = defaultWallpaper;
+        lockscreen.style.background = "url('https://unsplash.com') center/cover";
+    }
+}
+loadSavedWallpaper();
 
 // Real-Time 24-Hour System Clock Loop
 function updateSystemTime() {
@@ -25,12 +46,15 @@ function updateSystemTime() {
 setInterval(updateSystemTime, 1000);
 updateSystemTime();
 
+// Helper to determine if the lock screen overlay state layer is active
 function isLocked() {
     return lockscreen.classList.contains('active');
 }
 
+// Router Workspace Panel App Switch Switcher Engine
 function openApp(appId) {
-    if (isLocked()) return;
+    if (isLocked()) return; // Keeps apps from opening accidentally underneath the lock screen
+    
     var windows = document.querySelectorAll('.app-window');
     for (var i = 0; i < windows.length; i++) {
         windows[i].classList.remove('active');
@@ -46,24 +70,55 @@ function goHome() {
     openApp('app-home');
 }
 
-// Global Device Touch Click Handlers
+// --- SYSTEM UNLOCK FIX ENGINES ---
 document.getElementById('unlock-trigger').onclick = function() {
-    lockscreen.classList.remove('active');
-    openApp('app-home');
+    lockscreen.classList.remove('active'); // Remove lock layer BEFORE calling app routers
+    openApp('app-home');                   // Safely loads the home icon wallpaper canvas
 };
 
 document.getElementById('lockscreen-notification').onclick = function() {
-    lockscreen.classList.remove('active');
-    openApp('app-messages');
+    lockscreen.classList.remove('active'); // Remove lock layer BEFORE calling app routers
+    openApp('app-messages');               // Directs user straight into the iMessage view panel
 };
 
+// Global Hardware Button Click Triggers
 document.getElementById('hardware-home-bar').onclick = function() {
     goHome();
 };
 
 document.getElementById('launch-messages').onclick = function() { openApp('app-messages'); };
 document.getElementById('launch-store').onclick = function() { openApp('app-store'); };
+document.getElementById('launch-settings').onclick = function() { openApp('app-settings'); };
 document.getElementById('msg-back-btn').onclick = function() { goHome(); };
+document.getElementById('settings-back-btn').onclick = function() { goHome(); };
+
+// Settings App - Wallpaper Upload Processors
+document.getElementById('wallpaper-upload-row').onclick = function() {
+    wallpaperFileInput.click();
+};
+
+wallpaperFileInput.onchange = function(event) {
+    var files = event.target.files;
+    if (files.length > 0) {
+        var reader = new FileReader();
+        reader.onload = function(e) {
+            var backgroundUrlString = "url('" + e.target.result + "') center/cover";
+            
+            phoneScreen.style.background = backgroundUrlString;
+            lockscreen.style.background = backgroundUrlString;
+            
+            localStorage.setItem('iphone_simulator_bg', backgroundUrlString);
+        };
+        reader.readAsDataURL(files[0]);
+    }
+    event.target.value = '';
+};
+
+document.getElementById('reset-wallpaper-btn').onclick = function() {
+    localStorage.removeItem('iphone_simulator_bg');
+    phoneScreen.style.background = defaultWallpaper;
+    lockscreen.style.background = "url('https://unsplash.com') center/cover";
+};
 
 // Virtual iOS Keyboard Core Routines
 inputField.onclick = function() {
@@ -88,7 +143,7 @@ for (var j = 0; j < charKeys.length; j++) {
     };
 }
 
-// Photo & GIF Dispatch Engines
+// iMessage Attachments & Send Triggers
 document.getElementById('gif-trigger-btn').onclick = function() {
     if (gifPicker.style.display === 'none') {
         keyboardPanel.classList.remove('active');
