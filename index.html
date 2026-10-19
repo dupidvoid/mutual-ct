@@ -4,12 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Phone.os</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
     <!-- Precise Hardware Chassis Shell Container -->
     <div class="iphone-frame">
-        <!-- Physical Device Notch Earpiece -->
         <div class="iphone-notch"></div>
         
         <div class="iphone-screen">
@@ -19,52 +19,50 @@
                 <span>📶 🔋 100%</span>
             </div>
 
-            <!-- SYSTEM STATE 0: LOCK SCREEN LAYER (Active on Launch) -->
-            <div id="iphone-lockscreen" class="app-window active" style="background: url('https://unsplash.com') center/cover; z-index: 500; padding-top: 60px; display: flex; flex-direction: column; align-items: center; justify-content: space-between;">
-                
-                <!-- Lockscreen Clock Block -->
-                <div style="text-align: center; color: white;">
-                    <div style="font-size: 14px; font-weight: 500; letter-spacing: 1px; margin-bottom: 5px;" id="lock-date">Monday, 19 October</div>
-                    <div style="font-size: 64px; font-weight: 200; font-variant-numeric: tabular-nums;" id="lock-time">09:41</div>
+            <!-- SYSTEM STATE 0: LOCK SCREEN LAYER -->
+            <div id="iphone-lockscreen" class="app-window active">
+                <div class="lock-clock-area">
+                    <div id="lock-date">Monday, 19 October</div>
+                    <div id="lock-time">09:41</div>
                 </div>
 
-                <!-- Tapable Lockscreen Banner Notification Card -->
-                <div id="lockscreen-notification" style="width: calc(100% - 32px); background: rgba(255, 255, 255, 0.2); backdrop-filter: blur(20px); border-radius: 20px; padding: 14px; color: white; box-shadow: 0 8px 32px rgba(0,0,0,0.2); border: 1px solid rgba(255,255,255,0.1); cursor: pointer;">
-                    <div style="display: flex; justify-content: space-between; font-size: 11px; opacity: 0.7; margin-bottom: 4px;">
-                        <span style="font-weight: 600; letter-spacing: 0.5px;">💬 iMESSAGE</span>
+                <!-- Notification Card Banner -->
+                <div id="lockscreen-notification" class="notification-banner-card">
+                    <div class="banner-header-row">
+                        <span class="banner-tag">💬 iMESSAGE</span>
                         <span>just now</span>
                     </div>
-                    <div style="font-size: 14px; font-weight: 600;">Website Developer</div>
-                    <div style="font-size: 13px; opacity: 0.9; margin-top: 2px;">Check out the interactive keyboard!</div>
+                    <div class="banner-sender">Website Developer</div>
+                    <div class="banner-body">Check out the interactive keyboard!</div>
                 </div>
 
-                <!-- Interactive Swipe Action Unlock Control Trigger -->
-                <div style="width: 100%; text-align: center; padding-bottom: 40px;">
-                    <div id="unlock-trigger" style="color: rgba(255, 255, 255, 0.8); font-size: 13px; font-weight: 500; letter-spacing: 0.5px; animation: pulse 2s infinite; cursor: pointer; display: inline-flex; align-items: center; gap: 6px;">
+                <!-- Swipe Action Control Link -->
+                <div class="unlock-footer-area">
+                    <div id="unlock-trigger" class="unlock-pulse-text">
                         <span>🔼 Swipe up or Click to Unlock</span>
                     </div>
                 </div>
             </div>
 
-            <!-- APP NOTIFICATION DROPDOWN OVERLAY (Hidden by Default) -->
-            <div id="notification-overlay" style="display: none; position: absolute; top: 44px; left: 12px; right: 12px; background: rgba(255,255,255,0.9); backdrop-filter: blur(20px); padding: 14px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.15); z-index: 200; color: #1c1c1e; border: 1px solid rgba(0,0,0,0.05);">
-                <div style="display: flex; justify-content: space-between; font-size: 11px; color: #8e8e93; margin-bottom: 4px;">
-                    <span style="font-weight: 600; letter-spacing: 0.5px;">💬 MESSAGES</span>
+            <!-- APP NOTIFICATION DROPDOWN OVERLAY -->
+            <div id="notification-overlay">
+                <div class="banner-header-row">
+                    <span class="banner-tag-dark">💬 MESSAGES</span>
                     <span>now</span>
                 </div>
-                <p style="font-size: 13px; font-weight: 600;">Website Developer</p>
-                <p style="font-size: 12px; color: #3a3a3c; margin-top: 1px;">Hey! Did you check out the new photo and GIF features inside the app yet?</p>
+                <p class="banner-sender-dark">Website Developer</p>
+                <p class="banner-body-dark">Hey! Did you check out the new photo and GIF features inside the app yet?</p>
             </div>
 
             <!-- SYSTEM STATE 1: CORE APP HOME LAUNCHER -->
             <div id="app-home" class="app-window">
                 <div class="home-grid">
                     <div class="app-icon-wrapper" id="launch-messages">
-                        <div class="app-icon" style="background-color: #34c759; color: white;">💬</div>
+                        <div class="app-icon message-bg">💬</div>
                         <span class="app-label">Messages</span>
                     </div>
                     <div class="app-icon-wrapper" id="launch-store">
-                        <div class="app-icon" style="background-color: #007aff; color: white;">🅰️</div>
+                        <div class="app-icon store-bg">A</div>
                         <span class="app-label">App Store</span>
                     </div>
                 </div>
@@ -77,22 +75,20 @@
                     <span class="chat-title">Website Developer</span>
                 </div>
                 
-                <!-- Chat Scrolling Message Area -->
                 <div id="chat-messages" class="messages-feed">
-                    <div id="session-timestamp" style="text-align: center; font-size: 11px; color: #a1a1aa; margin: 10px 0;">Today 9:41 AM</div>
+                    <div id="session-timestamp">Today 13:12 PM</div>
                 </div>
                 
-                <!-- Hidden file input tracker logic for images -->
-                <input type="file" id="ios-photo-file" accept="image/*" style="display:none;">
+                <input type="file" id="ios-photo-file" accept="image/*">
                 
-                <!-- Pop-up Inline GIF Drawer -->
-                <div id="ios-gif-picker" style="display: none; background: #f4f4f5; border-top: 1px solid #e4e4e7; padding: 8px; max-height: 120px; overflow-y: auto;">
-                    <p style="font-size: 11px; color: #71717a; font-weight: 600; margin-bottom: 6px;">Trending GIFs</p>
-                    <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px;">
-                        <img src="https://giphy.com" style="width:100%; height:45px; object-fit:cover; border-radius:6px; cursor:pointer;" class="gif-target">
-                        <img src="https://giphy.com" style="width:100%; height:45px; object-fit:cover; border-radius:6px; cursor:pointer;" class="gif-target">
-                        <img src="https://giphy.com" style="width:100%; height:45px; object-fit:cover; border-radius:6px; cursor:pointer;" class="gif-target">
-                        <img src="https://giphy.com" style="width:100%; height:45px; object-fit:cover; border-radius:6px; cursor:pointer;" class="gif-target">
+                <!-- Pop-up Inline GIF Drawer (Using placeholder image elements safely) -->
+                <div id="ios-gif-picker">
+                    <p class="gif-drawer-title">Trending GIFs</p>
+                    <div class="gif-drawer-grid">
+                        <img src="https://giphy.com" alt="Happy" class="gif-target">
+                        <img src="https://giphy.com" alt="Dance" class="gif-target">
+                        <img src="https://giphy.com" alt="Cat" class="gif-target">
+                        <img src="https://giphy.com" alt="Thumbs Up" class="gif-target">
                     </div>
                 </div>
 
@@ -109,7 +105,7 @@
                     <div class="kbd-row">
                         <button class="kbd-key kbd-char">Q</button><button class="kbd-key kbd-char">W</button><button class="kbd-key kbd-char">E</button><button class="kbd-key kbd-char">R</button><button class="kbd-key kbd-char">T</button><button class="kbd-key kbd-char">Y</button><button class="kbd-key kbd-char">U</button><button class="kbd-key kbd-char">I</button><button class="kbd-key kbd-char">O</button><button class="kbd-key kbd-char">P</button>
                     </div>
-                    <div class="kbd-row" style="padding: 0 8px;">
+                    <div class="kbd-row row-pad">
                         <button class="kbd-key kbd-char">A</button><button class="kbd-key kbd-char">S</button><button class="kbd-key kbd-char">D</button><button class="kbd-key kbd-char">F</button><button class="kbd-key kbd-char">G</button><button class="kbd-key kbd-char">H</button><button class="kbd-key kbd-char">J</button><button class="kbd-key kbd-char">K</button><button class="kbd-key kbd-char">L</button>
                     </div>
                     <div class="kbd-row">
@@ -126,4 +122,17 @@
             </div>
 
             <!-- SYSTEM STATE 3: MOCK APP STORE APPLICATION VIEW -->
-            <div id="app-store" class="app-window" style="background:#ffffff; color:#000000; padding:55px 20px 20px 20px;">
+            <div id="app-store" class="app-window">
+                <h2 class="store-header">Apps</h2>
+                <p class="store-empty-status">All software extensions are currently up to date.</p>
+            </div>
+
+            <!-- Physical Center Navigation Bar -->
+            <div class="iphone-home-bar" id="hardware-home-bar"></div>
+        </div>
+    </div>
+
+    <!-- Script Application Links -->
+    <script src="app.js"></script>
+</body>
+</html>
