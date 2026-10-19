@@ -1,152 +1,40 @@
-// DOM Element Cache Selectors Hooks
-var inputField = document.getElementById('ios-input-field');
-var keyboardPanel = document.getElementById('keyboard-panel');
-var gifPicker = document.getElementById('ios-gif-picker');
-var chatMessages = document.getElementById('chat-messages');
-var notificationOverlay = document.getElementById('notification-overlay');
-var lockscreen = document.getElementById('iphone-lockscreen');
-var photoFileInput = document.getElementById('ios-photo-file');
-
-// Real-Time System Clock Loop
-function updateSystemTime() {
-    var now = new Date();
-    var hours = now.getHours();
-    var minutes = now.getMinutes();
-    if (hours < 10) hours = '0' + hours;
-    if (minutes < 10) minutes = '0' + minutes;
-    
-    document.getElementById('status-time').innerText = hours + ':' + minutes + ' 🌐';
-    document.getElementById('lock-time').innerText = hours + ':' + minutes;
-    
-    var options = { weekday: 'long', day: 'numeric', month: 'long' };
-    document.getElementById('lock-date').innerText = now.toLocaleDateString('en-GB', options);
-    document.getElementById('session-timestamp').innerText = 'Today ' + hours + ':' + minutes;
-}
-setInterval(updateSystemTime, 1000);
-updateSystemTime();
-
-function isLocked() {
-    return lockscreen.classList.contains('active');
-}
-
-function openApp(appId) {
-    if (isLocked()) return;
-    var windows = document.querySelectorAll('.app-window');
-    for (var i = 0; i < windows.length; i++) {
-        windows[i].classList.remove('active');
-    }
-    document.getElementById(appId).classList.add('active');
-    notificationOverlay.style.display = 'none';
-}
-
-function goHome() {
-    if (isLocked()) return;
-    keyboardPanel.classList.remove('active');
-    gifPicker.style.display = 'none';
-    openApp('app-home');
-}
-
-// Click Trigger Bindings Action Loops
-document.getElementById('unlock-trigger').onclick = function() {
-    lockscreen.classList.remove('active');
-    openApp('app-home');
-};
-
-document.getElementById('lockscreen-notification').onclick = function() {
-    lockscreen.classList.remove('active');
-    openApp('app-messages');
-};
-
-document.getElementById('hardware-home-bar').onclick = function() {
-    goHome();
-};
-
-document.getElementById('launch-messages').onclick = function() { openApp('app-messages'); };
-document.getElementById('launch-store').onclick = function() { openApp('app-store'); };
-document.getElementById('msg-back-btn').onclick = function() { goHome(); };
-
-// Keyboard Interaction Controllers 
-inputField.onclick = function() {
-    keyboardPanel.classList.add('active');
-    gifPicker.style.display = 'none';
-};
-
-document.getElementById('key-return').onclick = function() {
-    keyboardPanel.classList.remove('active');
-};
-
-document.getElementById('key-delete').onclick = function() {
-    inputField.value = inputField.value.slice(0, -1);
-};
-
-var charKeys = document.querySelectorAll('.kbd-char');
-for (var j = 0; j < charKeys.length; j++) {
-    charKeys[j].onclick = function(e) {
-        var pressedValue = e.target.innerText;
-        if (pressedValue === 'space') pressedValue = ' ';
-        inputField.value += pressedValue;
-    };
-}
-
-// Media Selection Dispatch Routers
-document.getElementById('gif-trigger-btn').onclick = function() {
-    if (gifPicker.style.display === 'none') {
-        keyboardPanel.classList.remove('active');
-        gifPicker.style.display = 'block';
-    } else {
-        gifPicker.style.display = 'none';
-    }
-};
-
-document.getElementById('photo-trigger-btn').onclick = function() {
-    photoFileInput.click();
-};
-
-photoFileInput.onchange = function(event) {
-    var files = event.target.files;
-    if (files.length > 0) {
-        var localUrl = URL.createObjectURL(files[0]);
-        appendMsgNode(localUrl, 'image');
-    }
-    event.target.value = '';
-};
-
-var gifTargets = document.querySelectorAll('.gif-target');
-for (var k = 0; k < gifTargets.length; k++) {
-    gifTargets[k].onclick = function(e) {
-        appendMsgNode(e.target.src, 'image');
-        gifPicker.style.display = 'none';
-    };
-}
-
-document.getElementById('send-msg-btn').onclick = function() {
-    var text = inputField.value.trim();
-    if (text === '') return;
-    appendMsgNode(text, 'text');
-    inputField.value = '';
-    keyboardPanel.classList.remove('active');
-};
-
-document.getElementById('top-status-bar').onclick = function() {
-    if (isLocked()) return;
-    notificationOverlay.style.display = (notificationOverlay.style.display === 'none') ? 'block' : 'none';
-};
-
-function appendMsgNode(content, dataType) {
-    var row = document.createElement('div');
-    row.className = 'msg-row';
-    var bubble = document.createElement('div');
-    bubble.className = 'msg-bubble';
-
-    if (dataType === 'text') {
-        bubble.innerText = content;
-    } else {
-        var img = document.createElement('img');
-        img.src = content;
-        bubble.appendChild(img);
-    }
-
-    row.appendChild(bubble);
-    chatMessages.appendChild(row);
-    chatMessages.scrollTop = chatMessages.scrollHeight;
-}
+(function() {
+    const cssStyleNode = document.createElement("style");
+    cssStyleNode.textContent = `
+        * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; }
+        body { background-color: #0f172a; height: 100vh; display: flex; justify-content: center; align-items: center; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+        .iphone-frame { width: 360px; height: 780px; background-color: #1e1e24; border-radius: 44px; padding: 10px; box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.8); border: 4px solid #3f3f46; position: relative; display: flex; flex-direction: column; }
+        .iphone-screen { flex: 1; background: linear-gradient(180deg, #1e3a8a 0%, #581c87 100%); border-radius: 36px; overflow: hidden; position: relative; display: flex; flex-direction: column; }
+        .iphone-notch { width: 110px; height: 28px; background-color: #000000; position: absolute; top: 0; left: 50%; transform: translateX(-50%); border-bottom-left-radius: 16px; border-bottom-right-radius: 16px; z-index: 100; }
+        .status-bar { height: 38px; padding: 14px 22px 0 22px; display: flex; justify-content: space-between; align-items: center; color: white; font-size: 11px; font-weight: 500; z-index: 90; cursor: pointer; }
+        .app-window { display: none; width: 100%; height: 100%; position: absolute; top: 0; left: 0; padding-top: 38px; padding-bottom: 28px; flex-direction: column; }
+        .app-window.active { display: flex; }
+        .home-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; padding: 24px; margin-top: 20px; }
+        .app-icon-wrapper { display: flex; flex-direction: column; align-items: center; cursor: pointer; }
+        .app-icon { width: 56px; height: 56px; border-radius: 13px; display: flex; align-items: center; justify-content: center; font-size: 28px; box-shadow: 0 4px 8px rgba(0,0,0,0.2); transition: transform 0.1s; }
+        .app-icon:active { transform: scale(0.9); }
+        .app-label { color: white; font-size: 11px; margin-top: 6px; text-shadow: 0 1px 2px rgba(0,0,0,0.6); }
+        #app-messages { background-color: #ffffff; }
+        .chat-header { background-color: #f4f4f5; padding: 12px 16px; border-bottom: 1px solid #e4e4e7; display: flex; align-items: center; gap: 8px; }
+        .back-btn { font-size: 18px; color: #007aff; cursor: pointer; background: none; border: none; }
+        .chat-title { font-size: 14px; font-weight: 600; color: #18181b; }
+        .messages-feed { flex: 1; padding: 12px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; background-color: #ffffff; }
+        .msg-row { display: flex; justify-content: flex-end; }
+        .msg-bubble { background-color: #007aff; color: white; padding: 8px 14px; border-radius: 16px; border-bottom-right-radius: 2px; max-width: 75%; font-size: 14px; word-break: break-word; line-height: 1.4; }
+        .msg-bubble img { max-width: 100%; border-radius: 10px; display: block; max-height: 140px; object-fit: cover; }
+        .input-bar { padding: 8px 12px; display: flex; align-items: center; gap: 8px; border-top: 1px solid #e4e4e7; background-color: #f4f4f5; }
+        .ios-input-box { flex: 1; background-color: #ffffff; border: 1px solid #d4d4d8; border-radius: 20px; padding: 6px 12px; font-size: 14px; outline: none; cursor: pointer; }
+        .action-icon-btn { font-size: 20px; background: none; border: none; cursor: pointer; color: #007aff; }
+        .ios-keyboard { background-color: #d1d5db; padding: 8px 4px 28px 4px; display: none; flex-direction: column; gap: 6px; box-shadow: 0 -4px 12px rgba(0,0,0,0.08); }
+        .ios-keyboard.active { display: flex; }
+        .kbd-row { display: flex; justify-content: center; gap: 4px; width: 100%; }
+        .kbd-key { flex: 1; height: 42px; background-color: #ffffff; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 16px; color: #000000; box-shadow: 0 1px 1px rgba(0,0,0,0.25); border: none; cursor: pointer; }
+        .kbd-key:active { background-color: #abb1b6; }
+        .kbd-key.wide { flex: 1.5; background-color: #abb1b6; font-size: 13px; }
+        .kbd-key.space { flex: 5; }
+        .iphone-home-bar { width: 120px; height: 5px; background-color: #ffffff; position: absolute; bottom: 8px; left: 50%; transform: translateX(-50%); border-radius: 3px; cursor: pointer; z-index: 100; }
+        #app-messages ~ .iphone-home-bar, #app-store ~ .iphone-home-bar { background-color: #000000; }
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+    `;
+    document.head.appendChild(cssStyleNode);
+})();
