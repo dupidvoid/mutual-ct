@@ -4,395 +4,141 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Instant Chat App</title>
-    <style>
-        /* Base Reset & Application Variables */
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-        body {
-            background-color: #f1f5f9;
-            height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-        }
-
-        /* Chat Container Shell Layout */
-        .chat-container {
-            width: 100%;
-            max-width: 440px;
-            height: 600px;
-            background-color: #ffffff;
-            border-radius: 16px;
-            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
-            display: flex;
-            flex-col: column;
-            flex-direction: column;
-            overflow: hidden;
-            border: 1px solid #e2e8f0;
-        }
-
-        /* Chat Module Header Panel */
-        .chat-header {
-            background-color: #4f46e5;
-            padding: 16px;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            color: #ffffff;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
-        }
-        .header-avatar {
-            width: 40px;
-            height: 40px;
-            background-color: rgba(255, 255, 255, 0.2);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 20px;
-        }
-        .header-title {
-            font-weight: 600;
-            font-size: 18px;
-            line-height: 1.25;
-        }
-        .header-status {
-            font-size: 12px;
-            opacity: 0.8;
-            display: flex;
-            align-items: center;
-            gap: 4px;
-            margin-top: 2px;
-        }
-        .status-dot {
-            width: 8px;
-            height: 8px;
-            background-color: #4ade80;
-            border-radius: 50%;
-            display: inline-block;
-        }
-
-        /* Message Display Logs Area */
-        .messages-area {
-            flex: 1;
-            padding: 16px;
-            overflow-y: auto;
-            background-color: #f8fafc;
-            display: flex;
-            flex-direction: column;
-            gap: 16px;
-        }
-        .system-msg-row {
-            display: flex;
-            justify-content: center;
-        }
-        .system-msg {
-            background-color: #e2e8f0;
-            color: #475569;
-            font-size: 12px;
-            padding: 4px 12px;
-            border-radius: 9999px;
-            box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-        }
-        .msg-row {
-            display: flex;
-            justify-content: flex-end;
-        }
-        .msg-bubble {
-            background-color: #4f46e5;
-            color: #ffffff;
-            border-radius: 16px;
-            border-top-right-radius: 0px;
-            max-width: 75%;
-            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
-        }
-        .msg-text {
-            padding: 8px 16px;
-            font-size: 14px;
-            line-height: 1.5;
-            word-break: break-word;
-        }
-        .msg-media {
-            padding: 6px;
-        }
-        .msg-media img {
-            border-radius: 12px;
-            max-h: 192px;
-            max-height: 192px;
-            object-fit: cover;
-            width: 100%;
-            display: block;
-        }
-
-        /* Dropdown GIF Attachment Drawer Panel */
-        .gif-picker {
-            border-top: 1px solid #e2e8f0;
-            background-color: #ffffff;
-            padding: 12px;
-            max-height: 192px;
-            overflow-y: auto;
-            box-shadow: inset 0 2px 4px 0 rgba(0, 0, 0, 0.05);
-        }
-        .gif-picker.hidden {
-            display: none;
-        }
-        .gif-picker-header {
-            font-size: 12px;
-            font-weight: 600;
-            color: #64748b;
-            margin-bottom: 8px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .gif-close-btn {
-            border: none;
-            background: none;
-            color: #94a3b8;
-            cursor: pointer;
-            font-weight: bold;
-            font-size: 14px;
-        }
-        .gif-close-btn:hover {
-            color: #475569;
-        }
-        .gif-grid {
-            display: grid;
-            grid-template-columns: repeat(4, minmax(0, 1fr));
-            gap: 8px;
-        }
-        .gif-item {
-            border-radius: 4px;
-            cursor: pointer;
-            height: 64px;
-            width: 100%;
-            object-fit: cover;
-        }
-        .gif-item:hover {
-            opacity: 0.8;
-        }
-
-        /* Chat Command Action Form Footer Tool Bar */
-        .input-bar {
-            padding: 12px;
-            background-color: #ffffff;
-            border-top: 1px solid #e2e8f0;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        .hidden-file-input {
-            display: none;
-        }
-        .media-btn {
-            border: none;
-            background: none;
-            padding: 8px;
-            color: #64748b;
-            cursor: pointer;
-            border-radius: 50%;
-            font-size: 18px;
-            transition: background-color 0.2s, color 0.2s;
-        }
-        .media-btn:hover {
-            color: #4f46e5;
-            background-color: #f1f5f9;
-        }
-        .text-input {
-            flex: 1;
-            background-color: #f1f5f9;
-            color: #1e293b;
-            font-size: 14px;
-            padding: 8px 16px;
-            border-radius: 9999px;
-            border: none;
-            outline: none;
-            transition: ring 0.2s;
-        }
-        .text-input:focus {
-            box-shadow: 0 0 0 2px #4f46e5;
-        }
-        .send-btn {
-            background-color: #4f46e5;
-            color: #ffffff;
-            border: none;
-            padding: 8px;
-            border-radius: 50%;
-            cursor: pointer;
-            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
-            transition: background-color 0.2s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 36px;
-            height: 36px;
-            font-size: 14px;
-        }
-        .send-btn:hover {
-            background-color: #4338ca;
-        }
-
-        /* Custom Scrollbar Styles Layout Configuration */
-        ::-webkit-scrollbar { width: 6px; }
-        ::-webkit-scrollbar-track { background: transparent; }
-        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
-        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
-    </style>
 </head>
 <body>
-    
-    <!-- Tailwind CSS for modern, clean layout -->
-    <script src="https://tailwindcss.com"></script>
-    <style>
-        /* Custom scrollbar styling for a cleaner interface */
-        ::-webkit-scrollbar { width: 6px; }
-        ::-webkit-scrollbar-track { background: #f1f1f1; }
-        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
-        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
-    </style>
-</head>
-<body class="bg-slate-100 h-screen flex justify-center items-center font-sans">
 
-    <!-- Chat Container -->
-    <div class="w-full max-w-md h-[600px] bg-white rounded-2xl shadow-xl flex flex-col overflow-hidden border border-slate-200">
-        
-        <!-- Chat Header -->
-        <div class="bg-indigo-600 p-4 flex items-center gap-3 text-white shadow-md">
-            <div class="w-10 h-10 bg-indigo-200 rounded-full flex items-center justify-center font-bold text-indigo-800">
-                🤖
-            </div>
+    <!-- 1. THE CHAT HTML STRUCTURE -->
+    <div class="chat-container">
+        <div class="chat-header">
+            <div class="header-avatar">💬</div>
             <div>
-                <h1 class="font-semibold text-lg leading-tight">Global Chatroom</h1>
-                <span class="text-xs text-indigo-200 flex items-center gap-1">
-                    <span class="w-2 h-2 bg-green-400 rounded-full inline-block animate-pulse"></span> Online
-                </span>
+                <h1 class="header-title">Instant Chat</h1>
+                <div class="header-status"><span class="status-dot"></span> Active Room</div>
             </div>
         </div>
 
-        <!-- Messages Area -->
-        <div id="chat-messages" class="flex-1 p-4 overflow-y-auto space-y-4 bg-slate-50">
-            <!-- Welcome System Message -->
-            <div class="flex justify-center">
-                <span class="bg-slate-200 text-slate-600 text-xs px-3 py-1 rounded-full shadow-sm">
-                    Joined the room. Type a message or send media!
-                </span>
+        <div id="chat-messages" class="messages-area">
+            <div class="system-msg-row">
+                <span class="system-msg">Welcome! Type a message or send media below.</span>
             </div>
         </div>
 
-        <!-- GIF Picker Popup Panel (Hidden by default) -->
-        <div id="gif-picker" class="hidden border-t border-slate-200 bg-white p-3 max-h-48 overflow-y-auto shadow-inner">
-            <div class="text-xs font-semibold text-slate-500 mb-2 flex justify-between items-center">
+        <div id="gif-picker" class="gif-picker hidden">
+            <div class="gif-picker-header">
                 <span>Select a GIF</span>
-                <button onclick="toggleGifPicker()" class="text-slate-400 hover:text-slate-600 font-bold">✕</button>
+                <button onclick="toggleGifPicker()" class="gif-close-btn">✕</button>
             </div>
-            <!-- Grid of Mock GIFs (Using placeholder images) -->
-            <div class="grid grid-cols-4 gap-2">
-                <img src="https://giphy.com" alt="Happy" class="rounded cursor-pointer hover:opacity-80 h-16 w-full object-cover" onclick="sendGif(this.src)">
-                <img src="https://giphy.com" alt="Dance" class="rounded cursor-pointer hover:opacity-80 h-16 w-full object-cover" onclick="sendGif(this.src)">
-                <img src="https://giphy.com" alt="Cat" class="rounded cursor-pointer hover:opacity-80 h-16 w-full object-cover" onclick="sendGif(this.src)">
-                <img src="https://giphy.com" alt="Thumbs Up" class="rounded cursor-pointer hover:opacity-80 h-16 w-full object-cover" onclick="sendGif(this.src)">
+            <div class="gif-grid">
+                <img src="https://giphy.com" alt="Happy" class="gif-item" onclick="sendGif(this.src)">
+                <img src="https://giphy.com" alt="Dance" class="gif-item" onclick="sendGif(this.src)">
+                <img src="https://giphy.com" alt="Cat" class="gif-item" onclick="sendGif(this.src)">
+                <img src="https://giphy.com" alt="Thumbs Up" class="gif-item" onclick="sendGif(this.src)">
             </div>
         </div>
 
-        <!-- Input Controller Bar -->
-        <div class="p-3 bg-white border-t border-slate-200 flex items-center gap-2">
-            <!-- Hidden File Input for Photos -->
-            <input type="file" id="photo-input" accept="image/*" class="hidden" onchange="handlePhotoUpload(event)">
-            
-            <!-- Media Attachment Buttons -->
-            <button onclick="triggerPhotoUpload()" class="p-2 text-slate-500 hover:text-indigo-600 hover:bg-slate-100 rounded-full transition" title="Upload Photo">
-                🖼️
-            </button>
-            <button onclick="toggleGifPicker()" class="p-2 text-slate-500 hover:text-indigo-600 hover:bg-slate-100 rounded-full transition" title="Send GIF">
-                🎬
-            </button>
-
-            <!-- Text input bar -->
-            <input type="text" id="message-input" placeholder="Type a message..." class="flex-1 bg-slate-100 text-sm px-4 py-2 rounded-full focus:outline-none focus:ring-2 focus:ring-indigo-500 transition" onkeypress="handleKeyPress(event)">
-            
-            <!-- Send button -->
-            <button onclick="sendTextMessage()" class="bg-indigo-600 hover:bg-indigo-700 text-white p-2 rounded-full shadow transition flex items-center justify-center w-9 h-9">
-                ➔
-            </button>
+        <div class="input-bar">
+            <input type="file" id="photo-input" accept="image/*" class="hidden-file-input" onchange="handlePhotoUpload(event)">
+            <button onclick="triggerPhotoUpload()" class="media-btn" title="Upload Photo">🖼️</button>
+            <button onclick="toggleGifPicker()" class="media-btn" title="Send GIF">🎬</button>
+            <input type="text" id="message-input" placeholder="Type a message..." class="text-input">
+            <button onclick="sendTextMessage()" class="send-btn">➔</button>
         </div>
     </div>
 
-    <!-- Core App Engine JavaScript Logic -->
+    <!-- 2. THE CSS STYLING SCRIPT -->
+    <script>
+        (function() {
+            const style = document.createElement("style");
+            style.textContent = `
+                * { box-sizing: border-box; margin: 0; padding: 0; }
+                body { background-color: #f1f5f9; height: 100vh; display: flex; justify-content: center; align-items: center; font-family: sans-serif; }
+                .chat-container { width: 100%; max-width: 440px; height: 600px; background-color: #ffffff; border-radius: 16px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); display: flex; flex-direction: column; overflow: hidden; border: 1px solid #e2e8f0; }
+                .chat-header { background-color: #4f46e5; padding: 16px; display: flex; align-items: center; gap: 12px; color: #ffffff; }
+                .header-avatar { width: 40px; height: 40px; background-color: rgba(255,255,255,0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 20px; }
+                .header-title { font-weight: 600; font-size: 18px; }
+                .header-status { font-size: 12px; opacity: 0.8; display: flex; align-items: center; gap: 4px; }
+                .status-dot { width: 8px; height: 8px; background-color: #4ade80; border-radius: 50%; }
+                .messages-area { flex: 1; padding: 16px; overflow-y: auto; background-color: #f8fafc; display: flex; flex-direction: column; gap: 16px; }
+                .system-msg-row { display: flex; justify-content: center; }
+                .system-msg { background-color: #e2e8f0; color: #475569; font-size: 12px; padding: 4px 12px; border-radius: 9999px; }
+                .msg-row { display: flex; justify-content: flex-end; }
+                .msg-bubble { background-color: #4f46e5; color: #ffffff; border-radius: 16px; border-top-right-radius: 0px; max-width: 75%; }
+                .msg-text { padding: 8px 16px; font-size: 14px; word-break: break-word; }
+                .msg-media { padding: 6px; }
+                .msg-media img { border-radius: 12px; max-height: 192px; object-fit: cover; width: 100%; display: block; }
+                .gif-picker { border-top: 1px solid #e2e8f0; background-color: #ffffff; padding: 12px; max-height: 192px; overflow-y: auto; }
+                .gif-picker.hidden { display: none; }
+                .gif-picker-header { font-size: 12px; font-weight: 600; color: #64748b; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; }
+                .gif-close-btn { border: none; background: none; color: #94a3b8; cursor: pointer; font-weight: bold; }
+                .gif-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+                .gif-item { border-radius: 4px; cursor: pointer; height: 64px; width: 100%; object-fit: cover; }
+                .input-bar { padding: 12px; background-color: #ffffff; border-top: 1px solid #e2e8f0; display: flex; align-items: center; gap: 8px; }
+                .hidden-file-input { display: none; }
+                .media-btn { border: none; background: none; padding: 8px; color: #64748b; cursor: pointer; font-size: 18px; }
+                .text-input { flex: 1; background-color: #f1f5f9; color: #1e293b; font-size: 14px; padding: 8px 16px; border-radius: 9999px; border: none; outline: none; }
+                .send-btn { background-color: #4f46e5; color: #ffffff; border: none; width: 36px; height: 36px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+                ::-webkit-scrollbar { width: 6px; }
+                ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+            `;
+            document.head.appendChild(style);
+        })();
+    </script>
+
+    <!-- 3. THE CHAT ENGINE FUNCTIONALITY -->
     <script>
         const chatMessages = document.getElementById('chat-messages');
         const messageInput = document.getElementById('message-input');
         const gifPicker = document.getElementById('gif-picker');
         const photoInput = document.getElementById('photo-input');
 
-        // Helper function to dynamically add messages to the screen area
-        function appendMessage(content, type = 'text') {
-            const msgWrapper = document.createElement('div');
-            msgWrapper.className = 'flex justify-end'; // Simulating outgoing messages on the right side
+        messageInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') sendTextMessage(); });
+        function toggleGifPicker() { gifPicker.classList.toggle('hidden'); }
+        function triggerPhotoUpload() { photoInput.click(); }
 
-            const msgBubble = document.createElement('div');
-            msgBubble.className = 'bg-indigo-600 text-white rounded-2xl rounded-tr-none px-4 py-2 max-w-[75%] shadow-sm';
-
-            if (type === 'text') {
-                msgBubble.innerText = content;
-            } else if (type === 'image' || type === 'gif') {
-                msgBubble.className = 'bg-indigo-600 p-1.5 rounded-2xl rounded-tr-none max-w-[75%] shadow-sm';
-                const img = document.createElement('img');
-                img.src = content;
-                img.className = 'rounded-xl max-h-48 object-cover w-full';
-                msgBubble.appendChild(img);
+        function handlePhotoUpload(event) {
+            const files = event.target.files;
+            if (files && files[0]) {
+                const localImageUrl = URL.createObjectURL(files[0]);
+                appendMessage(localImageUrl, 'image');
             }
-
-            msgWrapper.appendChild(msgBubble);
-            chatMessages.appendChild(msgWrapper);
-
-            // Automatically smooth-scroll window to bottom on new message additions
-            chatMessages.scrollTo({ top: chatMessages.scrollHeight, behavior: 'smooth' });
+            event.target.value = '';
         }
 
-        // Action: Submit written text message
+        function sendGif(url) {
+            appendMessage(url, 'gif');
+            gifPicker.classList.add('hidden');
+        }
+
         function sendTextMessage() {
             const text = messageInput.value.trim();
             if (text === '') return;
             appendMessage(text, 'text');
-            messageInput.value = ''; // Reset bar
+            messageInput.value = '';
         }
 
-        // Action: Listen for standard "Enter" keyboard stroke triggers
-        function handleKeyPress(event) {
-            if (event.key === 'Enter') {
-                sendTextMessage();
+        function appendMessage(content, type = 'text') {
+            const msgWrapper = document.createElement('div');
+            msgWrapper.className = 'msg-row';
+            const msgBubble = document.createElement('div');
+            msgBubble.className = 'msg-bubble';
+
+            if (type === 'text') {
+                const textDiv = document.createElement('div');
+                textDiv.className = 'msg-text';
+                textDiv.innerText = content;
+                msgBubble.appendChild(textDiv);
+            } else {
+                const mediaDiv = document.createElement('div');
+                mediaDiv.className = 'msg-media';
+                const img = document.createElement('img');
+                img.src = content;
+                mediaDiv.appendChild(img);
+                msgBubble.appendChild(mediaDiv);
             }
-        }
 
-        // Action: Toggle local Mock GIF dropdown pane state
-        function toggleGifPicker() {
-            gifPicker.classList.toggle('hidden');
-        }
-
-        // Action: Parse and append targeted item asset from picker grid
-        function sendGif(url) {
-            appendMessage(url, 'gif');
-            gifPicker.classList.add('hidden'); // Close context panel automatically
-        }
-
-        // Action: Force trigger hidden device native photo selection dialog
-        function triggerPhotoUpload() {
-            photoInput.click();
-        }
-
-        // Action: Convert picked file blob directly into temporary preview string URL references
-        function handlePhotoUpload(event) {
-            const file = event.target.files[0];
-            if (file) {
-                const localImageUrl = URL.createObjectURL(file);
-                appendMessage(localImageUrl, 'image');
-            }
-            // Clear input reset tracker state to allow picking matching duplicate file variations successively 
-            event.target.value = '';
+            msgWrapper.appendChild(msgBubble);
+            chatMessages.appendChild(msgWrapper);
+            chatMessages.scrollTo({ top: chatMessages.scrollHeight, behavior: 'smooth' });
         }
     </script>
 </body>
