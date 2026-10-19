@@ -11,12 +11,16 @@
     <div class="iphone-frame">
         <div class="iphone-notch"></div>
         
-        <div class="iphone-screen">
-            <!-- OS System Status Bar -->
-            <div class="status-bar" id="top-status-bar">
-                <span id="status-time">09:41 🌐</span>
-                <span>📶 🔋 100%</span>
-            </div>
+        <!-- ... Inside your index.html head content ... -->
+<div class="iphone-screen" id="global-phone-screen">
+    <!-- OS System Top Status Bar -->
+    <div class="status-bar" id="top-status-bar">
+        <!-- The script targets this specific ID to insert your local live clock data -->
+        <span id="status-time">00:00 🌐</span>
+        <span>📶 🔋 100%</span>
+    </div>
+<!-- ... Rest of your phone HTML structure below ... -->
+
 
             <!-- SYSTEM STATE 0: LOCK SCREEN LAYER -->
             <div id="iphone-lockscreen" class="app-window active" style="background: url('https://unsplash.com') center/cover; z-index: 500; padding-top: 60px; justify-content: space-between; align-items: center;">
