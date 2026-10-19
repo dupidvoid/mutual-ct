@@ -8,48 +8,77 @@
 </head>
 <body>
 
+    <!-- Precise Hardware Chassis Shell Container -->
     <div class="iphone-frame">
+        <!-- Physical Device Notch Earpiece -->
         <div class="iphone-notch"></div>
         
-        <!-- ... Inside your index.html head content ... -->
-<div class="iphone-screen" id="global-phone-screen">
-    <!-- OS System Top Status Bar -->
-    <div class="status-bar" id="top-status-bar">
-        <!-- The script targets this specific ID to insert your local live clock data -->
-        <span id="status-time">00:00 🌐</span>
-        <span>📶 🔋 100%</span>
-    </div>
-<!-- ... Rest of your phone HTML structure below ... -->
+        <div class="iphone-screen" id="global-phone-screen">
+            <!-- OS System Top Status Bar -->
+            <div class="status-bar" id="top-status-bar">
+                <span id="status-time">09:41 🌐</span>
+                <span>📶 🔋 100%</span>
+            </div>
 
-
-            <!-- SYSTEM STATE 0: LOCK SCREEN LAYER -->
-            <div id="iphone-lockscreen" class="app-window active" style="background: url('https://unsplash.com') center/cover; z-index: 500; padding-top: 60px; justify-content: space-between; align-items: center;">
+            <!-- CRITICAL LAYER FIX: LOCK SCREEN & PASSCODE SYSTEM OVERLAY -->
+            <div id="iphone-lockscreen" class="lockscreen-overlay">
                 
-                <div class="lock-clock-area">
-                    <div id="lock-date" style="color: white; text-shadow: 0 1px 4px rgba(0,0,0,0.4);">Monday, 19 October</div>
-                    <div id="lock-time" style="color: white; text-shadow: 0 1px 4px rgba(0,0,0,0.4);">09:41</div>
-                </div>
-
-                <div id="lockscreen-notification" class="notification-banner-card">
-                    <div class="banner-header-row">
-                        <span class="banner-tag">💬 iMESSAGE</span>
-                        <span>just now</span>
+                <!-- Main Lock View (Clock & Notification) -->
+                <div id="lock-main-view" class="lock-view-content">
+                    <div class="lock-clock-area">
+                        <div id="lock-date">Monday, 19 October</div>
+                        <div id="lock-time">09:41</div>
                     </div>
-                    <div class="banner-sender">Website Developer</div>
-                    <div class="banner-body">Check out the interactive keyboard!</div>
+
+                    <div id="lockscreen-notification" class="notification-banner-card">
+                        <div class="banner-header-row">
+                            <span class="banner-tag">💬 iMESSAGE</span>
+                            <span>just now</span>
+                        </div>
+                        <div class="banner-sender">Website Developer</div>
+                        <div class="banner-body">Check out the interactive keyboard!</div>
+                    </div>
+
+                    <div class="unlock-footer-area">
+                        <div id="unlock-trigger" class="unlock-pulse-text">
+                            <span>🔼 Swipe up or Click to Unlock</span>
+                        </div>
+                    </div>
                 </div>
 
-                <div class="unlock-footer-area">
-                    <div id="unlock-trigger" class="unlock-pulse-text" style="text-shadow: 0 1px 2px rgba(0,0,0,0.5);">
-                        <span> Swipe up or Click to Unlock</span>
+                <!-- Interactive Passcode Keypad View (With Apple Frosted Blur Styling) -->
+                <div id="passcode-view-panel" class="lock-view-content passcode-blur-backdrop" style="display: none;">
+                    <p class="passcode-prompt-title" id="passcode-status-msg">Enter Passcode</p>
+                    
+                    <div class="passcode-dots-row">
+                        <div class="passcode-dot-bubble" id="dot-0"></div>
+                        <div class="passcode-dot-bubble" id="dot-1"></div>
+                        <div class="passcode-dot-bubble" id="dot-2"></div>
+                        <div class="passcode-dot-bubble" id="dot-3"></div>
+                        <div class="passcode-dot-bubble" id="dot-4"></div>
+                    </div>
+
+                    <div class="passcode-buttons-grid">
+                        <button class="passcode-num-btn" value="1">1</button>
+                        <button class="passcode-num-btn" value="2">2</button>
+                        <button class="passcode-num-btn" value="3">3</button>
+                        <button class="passcode-num-btn" value="4">4</button>
+                        <button class="passcode-num-btn" value="5">5</button>
+                        <button class="passcode-num-btn" value="6">6</button>
+                        <button class="passcode-num-btn" value="7">7</button>
+                        <button class="passcode-num-btn" value="8">8</button>
+                        <button class="passcode-num-btn" value="9">9</button>
+                        <div style="visibility: hidden;"></div>
+                        <button class="passcode-num-btn" value="0">0</button>
+                        <button class="passcode-text-action-btn" id="passcode-cancel-trigger">Cancel</button>
                     </div>
                 </div>
             </div>
 
-            <!-- APP NOTIFICATION DROPDOWN OVERLAY -->
+            <!-- APP NOTIFICATION DROPDOWN OVERLAY (Only visible when unlocked) -->
             <div id="notification-overlay">
                 <div class="banner-header-row">
-                    <span class="banner-tag-dark"> MESSAGES</span>
+                    <span class="banner-tag-dark">💬 MESSAGES</span>
                     <span>now</span>
                 </div>
                 <p class="banner-sender-dark">Website Developer</p>
@@ -57,7 +86,7 @@
             </div>
 
             <!-- SYSTEM STATE 1: CORE APP HOME LAUNCHER -->
-            <div id="app-home" class="app-window">
+            <div id="app-home" class="app-window active">
                 <div class="home-grid">
                     <div class="app-icon-wrapper" id="launch-messages">
                         <div class="app-icon message-bg">💬</div>
@@ -70,19 +99,21 @@
                 </div>
             </div>
 
-            <!-- SYSTEM STATE 2: IMESSAGE VIEW INTERFACE -->
+            <!-- SYSTEM STATE 2: IMESSAGE APPLICATION VIEW INTERFACE -->
             <div id="app-messages" class="app-window">
                 <div class="chat-header">
                     <button class="back-btn" id="msg-back-btn">◀</button>
                     <span class="chat-title">Website Developer</span>
                 </div>
                 
+                <!-- Chat Scrolling Message Area -->
                 <div id="chat-messages" class="messages-feed">
                     <div id="session-timestamp">Today 9:41 AM</div>
                 </div>
                 
                 <input type="file" id="ios-photo-file" accept="image/*">
                 
+                <!-- Pop-up Inline GIF Drawer -->
                 <div id="ios-gif-picker">
                     <p class="gif-drawer-title">Trending GIFs</p>
                     <div class="gif-drawer-grid">
@@ -93,6 +124,7 @@
                     </div>
                 </div>
 
+                <!-- Chat Input Controller Dock Layout Bar -->
                 <div class="input-bar">
                     <button class="action-icon-btn" id="photo-trigger-btn">🖼️</button>
                     <button class="action-icon-btn" id="gif-trigger-btn">🎬</button>
@@ -100,6 +132,7 @@
                     <button class="action-icon-btn" id="send-msg-btn">➔</button>
                 </div>
 
+                <!-- SLIDING OS KEYBOARD SYSTEM -->
                 <div id="keyboard-panel" class="ios-keyboard">
                     <div class="kbd-row">
                         <button class="kbd-key kbd-char">Q</button><button class="kbd-key kbd-char">W</button><button class="kbd-key kbd-char">E</button><button class="kbd-key kbd-char">R</button><button class="kbd-key kbd-char">T</button><button class="kbd-key kbd-char">Y</button><button class="kbd-key kbd-char">U</button><button class="kbd-key kbd-char">I</button><button class="kbd-key kbd-char">O</button><button class="kbd-key kbd-char">P</button>
@@ -120,19 +153,17 @@
                 </div>
             </div>
 
-            <!-- SYSTEM STATE 3: MOCK APP STORE VIEW -->
+            <!-- SYSTEM STATE 3: MOCK APP STORE APPLICATION VIEW -->
             <div id="app-store" class="app-window">
                 <h2 class="store-header">Apps</h2>
                 <p class="store-empty-status">All software extensions are currently up to date.</p>
             </div>
 
-                <!-- ... Rest of your phone HTML structure above ... -->
+            <!-- Physical Center Navigation Bar -->
             <div class="iphone-home-bar" id="hardware-home-bar"></div>
         </div>
     </div>
 
-    <!-- CRITICAL CHECK: Ensure script is linked right here before the closing body tag -->
     <script src="app.js"></script>
 </body>
 </html>
-
